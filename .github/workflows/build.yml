@@ -1,0 +1,89 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: 'Build: ${{ matrix.target.platform }}-${{ matrix.target.arch }}'
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        target:
+          - platform: win32
+            arch: x64
+            os: windows-2022
+            generateArg: -G 'Visual Studio 17 2022' -A x64 -T v143
+            buildArg: ''
+          - platform: win32
+            arch: ia32
+            os: windows-2022
+            generateArg: -G 'Visual Studio 17 2022' -A Win32 -T v143
+            buildArg: ''
+          - platform: win32
+            arch: arm
+            os: windows-2022
+            generateArg: -G 'Visual Studio 17 2022' -A ARM -T v143
+            buildArg: ''
+          - platform: win32
+            arch: arm64
+            os: windows-2022
+            generateArg: -G 'Visual Studio 17 2022' -A ARM64 -T v143
+            buildArg: ''
+          - platform: linux
+            arch: x64
+            os: ubuntu-20.04
+            generateArg: -DCMAKE_C_FLAGS=-m64 -DCMAKE_CXX_FLAGS=-m64
+            buildArg: ''
+          - platform: linux
+            arch: ia32
+            os: ubuntu-20.04
+            generateArg: -DCMAKE_C_FLAGS=-m32 -DCMAKE_CXX_FLAGS=-m32
+            buildArg: ''
+          - platform: linux
+            arch: arm64
+            os: ubuntu-20.04
+            generateArg: ''
+            buildArg: ''
+          - platform: darwin
+            arch: x64
+            os: macos-11
+            generateArg: -DCMAKE_OSX_ARCHITECTURES=x86_64
+            buildArg: ''
+          - platform: darwin
+            arch: ia32
+            os: macos-11
+            generateArg: -DCMAKE_OSX_ARCHITECTURES=i386
+            buildArg: ''
+          - platform: darwin
+            arch: arm64
+            os: macos-11
+            generateArg: ''
+            buildArg: ''
+
+    runs-on: ${{ matrix.target.os }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Build
+        env:
+          LIBPROTOBUF_PREBUILT_GENERATE_ARG: ${{ matrix.target.generateArg }}
+          LIBPROTOBUF_PREBUILT_BUILD_ARG: ${{ matrix.target.buildArg }}
+        run: ./build.sh
+        shell: bash
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: libprotobuf-prebuilt-${{ github.sha }}
+          path: protobuf/cmake/build
+          compression-level: 9
