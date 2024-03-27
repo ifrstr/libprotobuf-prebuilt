@@ -5,8 +5,8 @@ set -euxo pipefail
 mkdir -p protobuf/cmake/build
 cd protobuf/cmake/build
 
-readarray -t generate_args < <(xargs printf '%s\0' <<<"${LIBPROTOBUF_PREBUILT_GENERATE_ARGS}")
-readarray -t build_args < <(xargs printf '%s\0' <<<"${LIBPROTOBUF_PREBUILT_BUILD_ARGS}")
+readarray -t generate_args < <(xargs printf '%s' <<<"${LIBPROTOBUF_PREBUILT_GENERATE_ARGS}")
+readarray -t build_args < <(xargs printf '%s' <<<"${LIBPROTOBUF_PREBUILT_BUILD_ARGS}")
 
 declare -p generate_args
 declare -p build_args
