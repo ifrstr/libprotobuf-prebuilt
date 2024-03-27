@@ -17,53 +17,53 @@ jobs:
           - platform: win32
             arch: x64
             os: windows-2022
-            generateArg: -G 'Visual Studio 17 2022' -A x64 -T v143
-            buildArg: ''
+            generateArgs: -G "Visual Studio 17 2022" -A x64 -T v143
+            buildArgs: ''
           - platform: win32
             arch: ia32
             os: windows-2022
-            generateArg: -G 'Visual Studio 17 2022' -A Win32 -T v143
-            buildArg: ''
+            generateArgs: -G "Visual Studio 17 2022" -A Win32 -T v143
+            buildArgs: ''
           - platform: win32
             arch: arm
             os: windows-2022
-            generateArg: -G 'Visual Studio 17 2022' -A ARM -T v143
-            buildArg: ''
+            generateArgs: -G "Visual Studio 17 2022" -A ARM -T v143
+            buildArgs: ''
           - platform: win32
             arch: arm64
             os: windows-2022
-            generateArg: -G 'Visual Studio 17 2022' -A ARM64 -T v143
-            buildArg: ''
+            generateArgs: -G "Visual Studio 17 2022" -A ARM64 -T v143
+            buildArgs: ''
           - platform: linux
             arch: x64
             os: ubuntu-20.04
-            generateArg: -DCMAKE_C_FLAGS=-m64 -DCMAKE_CXX_FLAGS=-m64
-            buildArg: ''
+            generateArgs: -DCMAKE_C_FLAGS=-m64 -DCMAKE_CXX_FLAGS=-m64
+            buildArgs: ''
           - platform: linux
             arch: ia32
             os: ubuntu-20.04
-            generateArg: -DCMAKE_C_FLAGS=-m32 -DCMAKE_CXX_FLAGS=-m32
-            buildArg: ''
+            generateArgs: -DCMAKE_C_FLAGS=-m32 -DCMAKE_CXX_FLAGS=-m32
+            buildArgs: ''
           - platform: linux
             arch: arm64
             os: ubuntu-20.04
-            generateArg: ''
-            buildArg: ''
+            generateArgs: ''
+            buildArgs: ''
           - platform: darwin
             arch: x64
             os: macos-11
-            generateArg: -DCMAKE_OSX_ARCHITECTURES=x86_64
-            buildArg: ''
+            generateArgs: -DCMAKE_OSX_ARCHITECTURES=x86_64
+            buildArgs: ''
           - platform: darwin
             arch: ia32
             os: macos-11
-            generateArg: -DCMAKE_OSX_ARCHITECTURES=i386
-            buildArg: ''
+            generateArgs: -DCMAKE_OSX_ARCHITECTURES=i386
+            buildArgs: ''
           - platform: darwin
             arch: arm64
             os: macos-11
-            generateArg: ''
-            buildArg: ''
+            generateArgs: ''
+            buildArgs: ''
 
     runs-on: ${{ matrix.target.os }}
 
@@ -76,8 +76,8 @@ jobs:
 
       - name: Build
         env:
-          LIBPROTOBUF_PREBUILT_GENERATE_ARG: ${{ matrix.target.generateArg }}
-          LIBPROTOBUF_PREBUILT_BUILD_ARG: ${{ matrix.target.buildArg }}
+          LIBPROTOBUF_PREBUILT_GENERATE_ARGS: ${{ matrix.target.generateArgs }}
+          LIBPROTOBUF_PREBUILT_BUILD_ARGS: ${{ matrix.target.buildArgs }}
         run: ./build.sh
         shell: bash
 
